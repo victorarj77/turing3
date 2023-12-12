@@ -1,1 +1,1 @@
-worker: python turing3.py
+web: python turing3.py
