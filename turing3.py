@@ -26,9 +26,10 @@ def handle_messages(update, context):
         context.bot.send_message(chat_id=update.message.chat_id, text=texto_original)
 
 def main():
-    updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
+    updater = Updater(use_context=True)
     dp = updater.dispatcher
     dp.add_handler(MessageHandler(callback=handle_messages, filters=None))
+    updater.bot.setToken('6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20')  # Configurar o token aqui
     updater.start_polling()
     updater.idle()
 
