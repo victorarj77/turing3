@@ -1,2 +1,3 @@
-python-telegram-bot==13.7
+python-telegram-bot==20.7
 selenium==3.141.0
+urllib3==1.26.8
