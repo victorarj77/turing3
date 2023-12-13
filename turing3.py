@@ -13,7 +13,7 @@ def obter_url_redirecionamento(link_encurtado):
         return url_redirecionamento
     except Exception as e:
         logger.error(f"Erro ao obter URL de redirecionamento: {e}")
-        return link_encurtado
+        return None  # Retornar None se não conseguir obter a URL
 
 def handle_messages(update, context):
     if update.message and update.message.text:
@@ -23,8 +23,11 @@ def handle_messages(update, context):
         logger.info(f"Links Enviados: {links_encurtados}")
         for link_encurtado in links_encurtados:
             url_redirecionamento = obter_url_redirecionamento(link_encurtado)
-            mensagem_personalizada = f"LINK DA PARTIDA: {url_redirecionamento}"
-            texto_original = texto_original.replace(link_encurtado, mensagem_personalizada)
+            if url_redirecionamento:
+                mensagem_personalizada = f"LINK DA PARTIDA: {url_redirecionamento}"
+                texto_original = texto_original.replace(link_encurtado, mensagem_personalizada)
+            else:
+                logger.warning(f"Não foi possível obter a URL de redirecionamento para: {link_encurtado}")
         logger.info(f"Texto Modificado: {texto_original}")
         context.bot.send_message(chat_id=update.message.chat_id, text=texto_original)
 
