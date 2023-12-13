@@ -1,1 +1,1 @@
-worker: python decoder.py
+web: python python decoder.py
