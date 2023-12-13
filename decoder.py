@@ -35,10 +35,10 @@ def handle_messages(update, context):
     
     for link in links:
         url_redirecionamento = obter_url_redirecionamento(link)
-        if url_redirecionamento:
-            context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA:  ⚽\n{url_redirecionamento}")
-        else:
-            context.bot.send_message(chat_id=update.message.chat_id, text="Erro ao obter URL de redirecionamento.")
+        # Substituir o link na mensagem original pelo link desencurtado
+        message_text = message_text.replace(link, url_redirecionamento)
+    
+    context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA:  ⚽\n{message_text}")
 
 # Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
 updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
