@@ -1,5 +1,5 @@
+import os
 import logging
-import requests
 from telegram.ext import Updater, MessageHandler, Filters
 
 # Configurar o logging
@@ -34,6 +34,9 @@ def handle_messages(update, context):
         else:
             context.bot.send_message(chat_id=update.message.chat_id, text="Erro ao obter URL de redirecionamento.")
 
+# Obter a porta do ambiente Heroku
+PORT = int(os.environ.get('PORT', 5000))
+
 # Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
 updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
 dp = updater.dispatcher
@@ -41,8 +44,9 @@ dp = updater.dispatcher
 # Adicionar um manipulador de mensagens ao dispatcher
 dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_messages))
 
-# Iniciar o bot
-updater.start_polling()
+# Iniciar o bot com a porta definida pelo ambiente Heroku
+updater.start_webhook(listen="0.0.0.0", port=PORT, url_path='SEU_TOKEN')
+updater.bot.setWebhook(f"https://turingx-691575dd13e5.herokuapp.com/{SEU_TOKEN}")
 
 # Aguardar o bot ser encerrado manualmente ou por algum erro
 updater.idle()
