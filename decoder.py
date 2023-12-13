@@ -62,7 +62,7 @@ def handle_messages(update, context):
     context.bot.send_message(chat_id=update.message.chat_id, text=message_text)
 
 # Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
-updater = Updater('6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
+updater = Updater('6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20')
 dp = updater.dispatcher
 
 # Adicionar um manipulador de mensagens ao dispatcher
