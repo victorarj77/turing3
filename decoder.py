@@ -2,6 +2,7 @@ import logging
 import re
 import requests
 from telegram.ext import Updater, MessageHandler, Filters
+from urllib.parse import urlparse
 
 # Configurar o logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -38,7 +39,7 @@ def handle_messages(update, context):
         # Substituir o link na mensagem original pelo link desencurtado
         message_text = message_text.replace(link, url_redirecionamento)
     
-    context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA:  ⚽\n{message_text}")
+    context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA89:  ⚽\n{message_text}")
 
 # Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
 updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
