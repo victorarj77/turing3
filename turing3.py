@@ -1,7 +1,6 @@
 import logging
 import re
-from telegram.ext import Updater, MessageHandler, CallbackContext
-import requests
+from telegram.ext import Updater, MessageHandler
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -26,10 +25,10 @@ def handle_messages(update, context):
         context.bot.send_message(chat_id=update.message.chat_id, text=texto_original)
 
 def main():
-    updater = Updater(use_context=True)
+    updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
     dp = updater.dispatcher
     dp.add_handler(MessageHandler(callback=handle_messages, filters=None))
-    updater.bot.setToken('6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20')  # Configurar o token aqui
+    updater.bot.setToken('6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20') 
     updater.start_polling()
     updater.idle()
 
