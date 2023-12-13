@@ -1,1 +1,1 @@
-web: python python decoder.py
+web: python decoder.py
