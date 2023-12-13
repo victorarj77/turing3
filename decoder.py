@@ -11,15 +11,17 @@ def obter_url_redirecionamento(link_encurtado):
     try:
         logger.info(f"Tentando desencurtar: {link_encurtado}")
 
-        # Realizar uma requisição HTTP GET e seguir os redirecionamentos
-        response = requests.get(link_encurtado)
+        # Utilizar timeout para evitar bloqueios prolongados
+        response = requests.get(link_encurtado, timeout=10)
+        response.raise_for_status()  # Lançar exceção para códigos de status HTTP de erro
+
         url_redirecionamento = response.url
 
         logger.info(f"URL desencurtada: {url_redirecionamento}")
 
         return url_redirecionamento
 
-    except Exception as e:
+    except requests.exceptions.RequestException as e:
         logger.error(f"Erro ao obter URL de redirecionamento: {e}")
         return link_encurtado
 
