@@ -16,7 +16,10 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 
 # Configuração do ChromeDriver com path local no seu repositório
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+chrome_bin = os.environ.get("GOOGLE_CHROME_BIN")
+chrome_options.binary_location = chrome_bin
+driver = webdriver.Chrome(options=chrome_options)
+
 
 def obter_url_redirecionamento(link_encurtado):
     try:
