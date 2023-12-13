@@ -1,5 +1,6 @@
 import os
 import logging
+import requests
 from telegram.ext import Updater, MessageHandler, Filters
 from flask import Flask
 
@@ -36,13 +37,12 @@ def index():
     return "Seu aplicativo está rodando com sucesso!"
 
 # Iniciar o bot
-updater = Updater(token='SEU_TOKEN', use_context=True)
+updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
 dp = updater.dispatcher
 
 # Adicionar um manipulador de mensagens ao dispatcher
 dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_messages))
 
-# Iniciar o Flask e o bot simultaneamente
+# Gunicorn irá iniciar o Flask e o bot simultaneamente
 if __name__ == '__main__':
     updater.start_polling()
-    app.run(host='0.0.0.0', port=port)

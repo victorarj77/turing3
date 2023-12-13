@@ -4,3 +4,4 @@ pyshorteners==1.0.0
 selenium==3.141.0
 chromedriver-autoinstaller==0.3.0
 gunicorn==20.1.0
+Flask==2.0.1
