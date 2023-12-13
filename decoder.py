@@ -1,8 +1,6 @@
-import os
 import logging
 import requests
 from telegram.ext import Updater, MessageHandler, Filters
-from flask import Flask
 
 # Configurar o logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -25,24 +23,26 @@ def obter_url_redirecionamento(link_encurtado):
         logger.error(f"Erro ao obter URL de redirecionamento: {e}")
         return link_encurtado
 
-# Configurar o Flask
-app = Flask(__name__)
+# Manipulador de mensagens
+def handle_messages(update, context):
+    message_text = update.message.text
+    
+    if 'http' in message_text:
+        url_redirecionamento = obter_url_redirecionamento(message_text)
+        if url_redirecionamento:
+            context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA:  ⚽\n{url_redirecionamento}")
+        else:
+            context.bot.send_message(chat_id=update.message.chat_id, text="Erro ao obter URL de redirecionamento.")
 
-# Porta padrão ou porta fornecida pelo Heroku
-port = int(os.environ.get('PORT', 5000))
-
-# Adicionar um roteamento simples para evitar o erro de boot
-@app.route('/')
-def index():
-    return "Seu aplicativo está rodando com sucesso!"
-
-# Iniciar o bot
+# Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
 updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
 dp = updater.dispatcher
 
 # Adicionar um manipulador de mensagens ao dispatcher
 dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_messages))
 
-# Gunicorn irá iniciar o Flask e o bot simultaneamente
-if __name__ == '__main__':
-    updater.start_polling()
+# Iniciar o bot
+updater.start_polling()
+
+# Aguardar o bot ser encerrado manualmente ou por algum erro
+updater.idle()
