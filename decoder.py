@@ -1,4 +1,5 @@
 import logging
+import re
 import requests
 from telegram.ext import Updater, MessageHandler, Filters
 
@@ -29,8 +30,11 @@ def obter_url_redirecionamento(link_encurtado):
 def handle_messages(update, context):
     message_text = update.message.text
     
-    if 'http' in message_text:
-        url_redirecionamento = obter_url_redirecionamento(message_text)
+    # Usar expressão regular para encontrar links no meio do texto
+    links = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message_text)
+    
+    for link in links:
+        url_redirecionamento = obter_url_redirecionamento(link)
         if url_redirecionamento:
             context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA:  ⚽\n{url_redirecionamento}")
         else:
