@@ -1,6 +1,6 @@
 import logging
 import requests
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import Updater, MessageHandler, filters
 
 # Configurar o logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -39,7 +39,7 @@ updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_co
 dp = updater.dispatcher
 
 # Adicionar um manipulador de mensagens ao dispatcher
-dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_messages))
+dp.add_handler(MessageHandler(filters.Filters.text & ~filters.Filters.command, handle_messages))
 
 # Iniciar o bot
 updater.start_polling()

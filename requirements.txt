@@ -1,5 +1,5 @@
 requests==2.26.0
-python-telegram-bot==20.7
+python-telegram-bot==13.7
 pyshorteners==1.0.0
 selenium==3.141.0
 chromedriver-autoinstaller==0.3.0
