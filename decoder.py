@@ -2,10 +2,10 @@ import logging
 import re
 import requests
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 import pyshorteners
 from telegram.ext import Updater, MessageHandler, filters
+from selenium.common.exceptions import WebDriverException
 
 # Configurar o logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -32,7 +32,7 @@ def obter_url_redirecionamento(link_encurtado):
 
         return url_redirecionamento
 
-    except Exception as e:
+    except WebDriverException as e:
         logger.error(f"Erro ao obter URL de redirecionamento: {e}")
         return link_encurtado
 
@@ -61,12 +61,14 @@ def handle_messages(update, context):
     # Enviar a mensagem atualizada
     context.bot.send_message(chat_id=update.message.chat_id, text=message_text)
 
-# Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
-updater = Updater('6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20')
-dp = updater.dispatcher
+# Inicializar o Updater sem especificar o token
+updater = Updater(use_context=True)
+
+# Definir o token separadamente
+updater.bot.token = '6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20'
 
 # Adicionar um manipulador de mensagens ao dispatcher
-dp.add_handler(MessageHandler(filters.Filters.text & ~filters.Filters.command, handle_messages))
+updater.dispatcher.add_handler(MessageHandler(filters.Filters.text & ~filters.Filters.command, handle_messages))
 
 # Iniciar o bot
 updater.start_polling()
