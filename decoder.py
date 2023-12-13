@@ -1,6 +1,7 @@
 import os
 import logging
 from telegram.ext import Updater, MessageHandler, Filters
+from flask import Flask
 
 # Configurar o logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -23,30 +24,25 @@ def obter_url_redirecionamento(link_encurtado):
         logger.error(f"Erro ao obter URL de redirecionamento: {e}")
         return link_encurtado
 
-# Manipulador de mensagens
-def handle_messages(update, context):
-    message_text = update.message.text
-    
-    if 'http' in message_text:
-        url_redirecionamento = obter_url_redirecionamento(message_text)
-        if url_redirecionamento:
-            context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA:  ⚽\n{url_redirecionamento}")
-        else:
-            context.bot.send_message(chat_id=update.message.chat_id, text="Erro ao obter URL de redirecionamento.")
+# Configurar o Flask
+app = Flask(__name__)
 
-# Obter a porta do ambiente Heroku
-PORT = int(os.environ.get('PORT', 5000))
+# Porta padrão ou porta fornecida pelo Heroku
+port = int(os.environ.get('PORT', 5000))
 
-# Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
-updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
+# Adicionar um roteamento simples para evitar o erro de boot
+@app.route('/')
+def index():
+    return "Seu aplicativo está rodando com sucesso!"
+
+# Iniciar o bot
+updater = Updater(token='SEU_TOKEN', use_context=True)
 dp = updater.dispatcher
 
 # Adicionar um manipulador de mensagens ao dispatcher
 dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_messages))
 
-# Iniciar o bot com a porta definida pelo ambiente Heroku
-updater.start_webhook(listen="0.0.0.0", port=PORT, url_path='SEU_TOKEN')
-updater.bot.setWebhook(f"https://turingx-691575dd13e5.herokuapp.com/{SEU_TOKEN}")
-
-# Aguardar o bot ser encerrado manualmente ou por algum erro
-updater.idle()
+# Iniciar o Flask e o bot simultaneamente
+if __name__ == '__main__':
+    updater.start_polling()
+    app.run(host='0.0.0.0', port=port)
