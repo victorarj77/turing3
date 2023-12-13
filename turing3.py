@@ -30,7 +30,7 @@ def handle_messages(update, context):
     if 'http' in message_text:
         url_redirecionamento = obter_url_redirecionamento(message_text)
         if url_redirecionamento:
-            context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA:  ⚽\n{url_redirecionamento}")
+            context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA123:  ⚽\n{url_redirecionamento}")
         else:
             context.bot.send_message(chat_id=update.message.chat_id, text="Erro ao obter URL de redirecionamento.")
 
