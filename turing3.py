@@ -1,19 +1,22 @@
 import logging
 import re
-from telegram.ext import Updater, MessageHandler, CallbackContext
+import os
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.options import Options
+from telegram.ext import Updater, MessageHandler, CallbackContext
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-chrome_options = ChromeOptions()
+# Configurações do ChromeDriver para o Heroku
+chrome_options = Options()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 
-driver = webdriver.Chrome(options=chrome_options)
+# Configuração do ChromeDriver com path local no seu repositório
+driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
 
 def obter_url_redirecionamento(link_encurtado):
     try:
