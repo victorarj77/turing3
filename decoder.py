@@ -2,7 +2,6 @@ import logging
 import re
 import requests
 from telegram.ext import Updater, MessageHandler, Filters
-from urllib.parse import urlparse
 
 # Configurar o logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -27,19 +26,24 @@ def obter_url_redirecionamento(link_encurtado):
         logger.error(f"Erro ao obter URL de redirecionamento: {e}")
         return link_encurtado
 
+# Função para encontrar links em uma mensagem usando expressão regular
+def encontrar_links(message_text):
+    # Expressão regular para encontrar links
+    pattern = r'https?://\S+'
+    return re.findall(pattern, message_text)
+
 # Manipulador de mensagens
 def handle_messages(update, context):
     message_text = update.message.text
     
-    # Usar expressão regular para encontrar links no meio do texto
-    links = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message_text)
+    links = encontrar_links(message_text)
     
     for link in links:
         url_redirecionamento = obter_url_redirecionamento(link)
-        # Substituir o link na mensagem original pelo link desencurtado
-        message_text = message_text.replace(link, url_redirecionamento)
-    
-    context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDA89:  ⚽\n{message_text}")
+        if url_redirecionamento:
+            context.bot.send_message(chat_id=update.message.chat_id, text=f"⚽  ULTRON - LINK DA PARTIDAZZX:  ⚽\n{url_redirecionamento}")
+        else:
+            context.bot.send_message(chat_id=update.message.chat_id, text="Erro ao obter URL de redirecionamento.")
 
 # Substitua 'SEU_TOKEN' pelo token fornecido pelo BotFather
 updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
