@@ -1,15 +1,24 @@
 import logging
 import re
-import requests
 from telegram.ext import Updater, MessageHandler, CallbackContext
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+chrome_options = ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+
+driver = webdriver.Chrome(options=chrome_options)
+
 def obter_url_redirecionamento(link_encurtado):
     try:
-        response = requests.head(link_encurtado, allow_redirects=True)
-        url_redirecionamento = response.url
+        driver.get(link_encurtado)
+        url_redirecionamento = driver.current_url
         return url_redirecionamento
     except Exception as e:
         logger.error(f"Erro ao obter URL de redirecionamento: {e}")
