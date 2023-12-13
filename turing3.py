@@ -1,7 +1,7 @@
 import logging
 import re
 import requests
-from telegram.ext import Updater, MessageHandler
+from telegram.ext import Updater, MessageHandler, Filters
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -21,14 +21,14 @@ def handle_messages(update, context):
         links_encurtados = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', texto_original)
         for link_encurtado in links_encurtados:
             url_redirecionamento = obter_url_redirecionamento(link_encurtado)
-            mensagem_personalizada = "LINK DA PARTIDA:"
-            texto_original = texto_original.replace(link_encurtado, f"{mensagem_personalizada}\n{url_redirecionamento}")
+            mensagem_personalizada = f"LINK DA PARTIDA: {url_redirecionamento}"
+            texto_original = texto_original.replace(link_encurtado, mensagem_personalizada)
         context.bot.send_message(chat_id=update.message.chat_id, text=texto_original)
 
 def main():
     updater = Updater(token='6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20', use_context=True)
     dp = updater.dispatcher
-    dp.add_handler(MessageHandler(callback=handle_messages, filters=None))
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, callback=handle_messages))
     updater.start_polling()
     updater.idle()
 
