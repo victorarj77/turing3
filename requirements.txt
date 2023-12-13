@@ -1,0 +1,4 @@
+requests==2.26.0
+python-telegram-bot==19.0
+pyshorteners==1.0.0
+selenium==3.141.0

@@ -1,6 +1,9 @@
 import logging
 import re
 import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 import pyshorteners
 from telegram.ext import Updater, MessageHandler, filters
 
@@ -13,9 +16,17 @@ def obter_url_redirecionamento(link_encurtado):
     try:
         logger.info(f"Tentando desencurtar: {link_encurtado}")
 
-        # Realizar uma requisição HTTP GET e seguir os redirecionamentos
-        response = requests.get(link_encurtado)
-        url_redirecionamento = response.url
+        # Configurar o driver do Chrome para o Selenium em modo headless
+        chrome_options = ChromeOptions()
+        chrome_options.add_argument('--headless')
+        driver = webdriver.Chrome(options=chrome_options)
+
+        # Navegar para a página e obter a URL final
+        driver.get(link_encurtado)
+        url_redirecionamento = driver.current_url
+
+        # Fechar o navegador
+        driver.quit()
 
         logger.info(f"URL desencurtada: {url_redirecionamento}")
 
