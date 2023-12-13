@@ -61,11 +61,8 @@ def handle_messages(update, context):
     # Enviar a mensagem atualizada
     context.bot.send_message(chat_id=update.message.chat_id, text=message_text)
 
-# Inicializar o Updater sem especificar o token
+# Inicializar o Updater
 updater = Updater('6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20')
-
-# Definir o token separadamente
-updater.bot.token = '6854755484:AAG-jgENE7UorXuH9I_UdxyttivBQrncG20'
 
 # Adicionar um manipulador de mensagens ao dispatcher
 updater.dispatcher.add_handler(MessageHandler(filters.Filters.text & ~filters.Filters.command, handle_messages))
